@@ -8,11 +8,12 @@ const UpdatePost = () => {
 
     //Get context api data
     const [posts, setPosts] = useContext(UserContext)
-    // console.log(posts)
-    const [updatedInfo, setUpdatedInfo] = useState({ title: "", body: "" })
-
     // FInd the post which will be updating
+    const updatingPost = posts.find(post => post.id === parseInt(id));
+    //Find the index of the post which have been updated
     const updatingPostIndex = posts.findIndex(post => post.id === parseInt(id));
+
+    const [updatedInfo, setUpdatedInfo] = useState({ title: updatingPost.title, body: updatingPost.body })
 
     const handleChange = e => {
         setUpdatedInfo({
@@ -41,6 +42,7 @@ const UpdatePost = () => {
                     onChange={handleChange}
                     type="text"
                     placeholder="title"
+                    value={updatedInfo.title}
                     className="w-full rounded-full mb-4 py-3 px-8 ring-0 focus:outline-none border border-gray-700"
                 />
                 <input
@@ -48,6 +50,7 @@ const UpdatePost = () => {
                     onChange={handleChange}
                     type="text"
                     placeholder="body"
+                    value={updatedInfo.body}
                     className="w-full rounded-full mb-4 py-3 px-8 ring-0 focus:outline-none border border-gray-700"
                 />
                 <button type="submit" className="btn">Update</button>

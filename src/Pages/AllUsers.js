@@ -3,13 +3,14 @@ import { Link } from 'react-router-dom';
 
 const AllUsers = () => {
     const [users, setUsers] = useState([])
+    const [searchedUsers, setSearchedUsers] = useState(users)
     const [sort, setSort] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [postsPerPage, setPostsPerPage] = useState(3);
     const pageNumbers = [];
     const paginate = (pageNumber) => setCurrentPage(pageNumber)
 
-    for (let i = 1; i <= Math.ceil(users.length / postsPerPage); i++) {
+    for (let i = 1; i <= Math.ceil(searchedUsers.length / postsPerPage); i++) {
         pageNumbers.push(i)
     }
 
@@ -17,30 +18,33 @@ const AllUsers = () => {
     useEffect(() => {
         fetch('https://jsonplaceholder.typicode.com/users')
             .then(res => res.json())
-            .then(data => setUsers(data))
+            .then(data => {
+                setUsers(data)
+                setSearchedUsers(data)
+            })
     }, [])
 
     //handling search by name functionality
     const handleTextChange = e => {
         const filterUser = users.filter(user => user.name.toLowerCase().includes(e.target.value.toLowerCase()))
-        setUsers(filterUser);
+        setSearchedUsers(filterUser);
     }
 
     //handling search by email functionality
     const handleEmailChange = e => {
         const filterUser = users.filter(user => user.email.toLowerCase().includes(e.target.value.toLowerCase()))
-        setUsers(filterUser);
+        setSearchedUsers(filterUser);
     }
 
     //handling search by website functionality
     const handleWebsiteChange = e => {
         const filterUser = users.filter(user => user.website.toLowerCase().includes(e.target.value.toLowerCase()))
-        setUsers(filterUser);
+        setSearchedUsers(filterUser);
     }
 
     //handling ASC and DSC sorting functionality
     const handleSorted = (sortType) => {
-        const sorted = users.sort((a, b) => {
+        const sorted = searchedUsers.sort((a, b) => {
             const isReverse = (sortType === "asc") ? 1 : -1
             return isReverse * a.name.localeCompare(b.name)
         })
@@ -51,7 +55,7 @@ const AllUsers = () => {
     //handling pagination functionality
     const indexOfLastPost = currentPage * postsPerPage;
     const indexOfFirstPost = indexOfLastPost - postsPerPage;
-    const currentPosts = users.slice(indexOfFirstPost, indexOfLastPost);
+    const currentPosts = searchedUsers.slice(indexOfFirstPost, indexOfLastPost);
 
     return (
         <div className="pt-24 text-center px-12">
