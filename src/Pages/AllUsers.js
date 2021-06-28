@@ -9,6 +9,7 @@ const AllUsers = () => {
     const [postsPerPage, setPostsPerPage] = useState(3);
     const pageNumbers = [];
     const paginate = (pageNumber) => setCurrentPage(pageNumber)
+    const [searchedData, setSearchedData] = useState({name: '', email: '', website: ''})
 
     for (let i = 1; i <= Math.ceil(searchedUsers.length / postsPerPage); i++) {
         pageNumbers.push(i)
@@ -24,21 +25,41 @@ const AllUsers = () => {
             })
     }, [])
 
+    useEffect(() => {
+        const searchedData = window.localStorage.getItem('searchedData')
+        const currentPage = window.localStorage.getItem('currentPage')
+        const postsPerPage = window.localStorage.getItem('postsPerPage')
+        const sort = window.localStorage.getItem('sort')
+        setSearchedData(JSON.parse(searchedData))
+        setCurrentPage(JSON.parse(currentPage))
+        setPostsPerPage(JSON.parse(postsPerPage))
+        setSort(JSON.parse(sort))
+    }, [])
+
+    useEffect(() => {
+        window.localStorage.setItem('searchedData', JSON.stringify(searchedData))
+        window.localStorage.setItem('currentPage', JSON.stringify(currentPage))
+        window.localStorage.setItem('postsPerPage', JSON.stringify(postsPerPage))
+        window.localStorage.setItem('sort', JSON.stringify(sort))
+    })
+
+    useEffect(() => {
+        const filterUser = users.filter(user => user.name.toLowerCase().includes(searchedData.name.toLowerCase() || searchedData.email.toLocaleLowerCase() || searchedData.website.toLocaleLowerCase()))
+
+        const sorted = filterUser.sort((a, b) => {
+            const isReverse = (sort === "asc") ? 1 : -1
+            return isReverse * a.name.localeCompare(b.name)
+        })
+        setSearchedUsers(sorted);
+    }, [searchedData.email, searchedData.name, searchedData.website,users, sort])
+
     //handling search by name functionality
-    const handleTextChange = e => {
-        const filterUser = users.filter(user => user.name.toLowerCase().includes(e.target.value.toLowerCase()))
-        setSearchedUsers(filterUser);
-    }
-
-    //handling search by email functionality
-    const handleEmailChange = e => {
-        const filterUser = users.filter(user => user.email.toLowerCase().includes(e.target.value.toLowerCase()))
-        setSearchedUsers(filterUser);
-    }
-
-    //handling search by website functionality
-    const handleWebsiteChange = e => {
-        const filterUser = users.filter(user => user.website.toLowerCase().includes(e.target.value.toLowerCase()))
+    const handleSearch = e => {
+        setSearchedData({
+            ...searchedData,
+            [e.target.name]:e.target.value
+        })
+        const filterUser = users.filter(user => user.name.toLowerCase().includes(searchedData.name.toLowerCase() || searchedData.email.toLocaleLowerCase() || searchedData.website.toLocaleLowerCase()))
         setSearchedUsers(filterUser);
     }
 
@@ -55,7 +76,7 @@ const AllUsers = () => {
     //handling pagination functionality
     const indexOfLastPost = currentPage * postsPerPage;
     const indexOfFirstPost = indexOfLastPost - postsPerPage;
-    const currentPosts = searchedUsers.slice(indexOfFirstPost, indexOfLastPost);
+    const currentPosts = searchedUsers?.slice(indexOfFirstPost, indexOfLastPost);
 
     return (
         <div className="pt-24 text-center md:px-12 overflow-x-scroll">
@@ -69,7 +90,7 @@ const AllUsers = () => {
                     <p className="font-bold border-b-1 border-primary">Post Per Page</p>
                     <select
                         onChange={(e) => setPostsPerPage(parseInt(e.target.value))}
-                        className=""
+                        value={postsPerPage}
                     >
                         <option value="3">3</option>
                         <option value="5">5</option>
@@ -85,20 +106,26 @@ const AllUsers = () => {
             </div>
             <div className="flex justify-between flex-wrap px-2 md:px-12 pt-4">
                 <input
-                    onChange={handleTextChange}
+                    onChange={handleSearch}
                     type="text"
                     placeholder="Search by name"
+                    name="name"
+                    value={searchedData?.name}
                     className="rounded py-2 md:py-2 px-2 md:px-8  ring-0 focus:outline-none border border-gray-700"
                 />
                 <input
-                    onChange={handleEmailChange}
+                    onChange={handleSearch}
                     type="text"
+                    name="email"
+                    value={searchedData?.email}
                     placeholder="Search by email"
                     className="rounded py-2 md:py-2 px-2 md:px-8  ring-0 focus:outline-none border border-gray-700"
                 />
                 <input
-                    onChange={handleWebsiteChange}
+                    onChange={handleSearch}
                     type="text"
+                    name="website"
+                    value={searchedData?.website}
                     placeholder="Search by website"
                     className="rounded py-2 md:py-2 px-2 md:px-8  ring-0 focus:outline-none border border-gray-700"
                 />
