@@ -58,7 +58,7 @@ const AllUsers = () => {
     const currentPosts = searchedUsers.slice(indexOfFirstPost, indexOfLastPost);
 
     return (
-        <div className="pt-24 text-center px-12">
+        <div className="pt-24 text-center md:px-12 overflow-x-scroll">
             <h1 className="font-bold py-4 text-2xl">All Users List Here</h1>
             <div className="flex justify-between">
                 <div className="flex justify-center">
@@ -78,34 +78,34 @@ const AllUsers = () => {
                 </div>
             </div>
 
-            <div className="flex justify-between px-12 py-4 bg-primary text-white">
+            <div className="flex justify-between flex-wrap px-2 md:px-12 py-4 bg-primary text-white">
                 <h1>Name</h1>
                 <h1>Email</h1>
                 <h1>Website</h1>
             </div>
-            <div className="flex justify-between px-12 pt-4">
+            <div className="flex justify-between flex-wrap px-2 md:px-12 pt-4">
                 <input
                     onChange={handleTextChange}
                     type="text"
                     placeholder="Search by name"
-                    className="rounded py-3 px-8 ring-0 focus:outline-none border border-gray-700"
+                    className="rounded py-2 md:py-2 px-2 md:px-8  ring-0 focus:outline-none border border-gray-700"
                 />
                 <input
                     onChange={handleEmailChange}
                     type="text"
                     placeholder="Search by email"
-                    className="rounded py-3 px-8 ring-0 focus:outline-none border border-gray-700"
+                    className="rounded py-2 md:py-2 px-2 md:px-8  ring-0 focus:outline-none border border-gray-700"
                 />
                 <input
                     onChange={handleWebsiteChange}
                     type="text"
                     placeholder="Search by website"
-                    className="rounded py-3 px-8 ring-0 focus:outline-none border border-gray-700"
+                    className="rounded py-2 md:py-2 px-2 md:px-8  ring-0 focus:outline-none border border-gray-700"
                 />
             </div>
             <div className="my-4">
                 {currentPosts.map(user =>
-                    <div className="flex justify-between px-12 py-4 border-b-2 border-primary">
+                    <div className="flex justify-between flex-wrap mb-2 px-2 md:px-12 py-4 border-b-2 border-primary">
                         <Link to={`/user/${user.id}`}>{user.name}</Link>
                         <h1>{user.email}</h1>
                         <h1>{user.website}</h1>

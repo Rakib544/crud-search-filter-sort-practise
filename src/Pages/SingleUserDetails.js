@@ -47,7 +47,7 @@ const SingleUserDetails = () => {
             </div>
 
             <h2 className="font-bold text-lg pb-2 border-b-2 border-primary">User All Posts</h2>
-            <div className="grid grid-cols-3 gap-4 py-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 py-4">
                 {currentPosts.map(post => (
                     <div className="shadow-md p-4 cursor-pointer">
                         <h4 className="text-sm"><span className="font-bold">Post Id - </span>{post.id}</h4>

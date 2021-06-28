@@ -15,7 +15,7 @@ const Profile = () => {
   }
 
   return (
-    <div className="grid grid-cols-3 gap-4 pt-24 px-16 pb-8">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-24 px-4 md:px-16 pb-8">
 
       {posts?.map(post => (
         <div className="shadow-md p-4">

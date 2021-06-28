@@ -24,7 +24,7 @@ const Posts = () => {
 
     return (
         <React.Fragment>
-            <div className="grid grid-cols-3 gap-4 pt-24 px-16 pb-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-24 px-4 md:px-16 pb-8">
                 {posts.slice(0, visibleItems)?.map(post => (
                     <div className="shadow-md p-4 cursor-pointer" onClick={() => history.push(`/post/${post.id}`)}>
                         <h4 className="text-sm"> <span className="font-bold">Post ID: </span>{post.id}</h4>
