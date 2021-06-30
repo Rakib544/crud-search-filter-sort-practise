@@ -1,27 +1,29 @@
-import { createContext, useEffect, useState } from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { createContext, useEffect, useState } from "react";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Navbar from "./components/Navbar.js";
-import AddPosts from './Pages/AddPosts.js';
-import AllUsers from './Pages/AllUsers.js';
-import Posts from './Pages/Posts.js';
-import Profile from './Pages/Profile.js';
-import SinglePostDetails from './Pages/SinglePostDetails.js';
-import SingleUserDetails from './Pages/SingleUserDetails.js';
-import UpdatePost from './Pages/UpdatePost.js';
+import AddPosts from "./Pages/AddPosts.js";
+import AllUsers from "./Pages/AllUsers.js";
+import Posts from "./Pages/Posts.js";
+import Profile from "./Pages/Profile.js";
+import SinglePostDetails from "./Pages/SinglePostDetails.js";
+import SingleUserDetails from "./Pages/SingleUserDetails.js";
+import UpdatePost from "./Pages/UpdatePost.js";
 
-export const UserContext = createContext()
+export const UserContext = createContext();
 
 function App() {
   const [posts, setPosts] = useState([]);
-  
+
   useEffect(() => {
     const loadData = async () => {
-      const res = await fetch('https://jsonplaceholder.typicode.com/posts?userId=2')
-      const data = await res.json()
-      setPosts(data)
-    }
+      const res = await fetch(
+        "https://jsonplaceholder.typicode.com/posts?userId=2"
+      );
+      const data = await res.json();
+      setPosts(data);
+    };
     loadData();
-  }, [])
+  }, []);
 
   return (
     <UserContext.Provider value={[posts, setPosts]}>
@@ -55,7 +57,6 @@ function App() {
         </Switch>
       </BrowserRouter>
     </UserContext.Provider>
-
   );
 }
 
